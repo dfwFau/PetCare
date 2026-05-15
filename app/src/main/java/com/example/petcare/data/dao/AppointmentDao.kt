@@ -17,4 +17,13 @@ interface AppointmentDao {
 
     @Delete
     suspend fun deleteAppointment(appointment: Appointment)
+
+    @Query("SELECT * FROM appointments WHERE id = :id")
+    suspend fun getAppointmentById(id: Long): Appointment?
+
+    @Query("SELECT * FROM appointments ORDER BY dateTime ASC")
+    fun getAllAppointments(): LiveData<List<Appointment>>
+
+    @Query("SELECT * FROM appointments WHERE dateTime >= :currentTime ORDER BY dateTime ASC")
+    fun getUpcomingAppointments(currentTime: Long): LiveData<List<Appointment>>
 }

@@ -18,7 +18,10 @@ import com.example.petcare.viewmodel.ViewModelFactory
 
 import android.net.Uri
 import android.os.Environment
+import android.Manifest
+import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import java.io.File
@@ -31,12 +34,37 @@ class AddPetFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var viewModel: PetViewModel
     private var currentPhotoPath: String? = null
+    private var petToEdit: Pet? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            petToEdit = it.getSerializable(ARG_PET) as? Pet
+        }
+    }
 
     private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
         if (success) {
             currentPhotoPath?.let { path ->
                 Glide.with(this).load(path).into(binding.ivPet)
             }
+        }
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            performCapture()
+        } else {
+            Toast.makeText(requireContext(), "Camera permission is required to take photos", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let {
+            Glide.with(this).load(it).into(binding.ivPet)
+            currentPhotoPath = it.toString()
         }
     }
 
@@ -55,17 +83,82 @@ class AddPetFragment : Fragment() {
         viewModel = ViewModelProvider(this, ViewModelFactory(repository))[PetViewModel::class.java]
 
         setupSpinner()
+        checkForEditMode()
 
         binding.btnCapture.setOnClickListener {
             capturePhoto()
         }
 
+        binding.btnGallery.setOnClickListener {
+            pickImageLauncher.launch("image/*")
+        }
+
         binding.btnSave.setOnClickListener {
-            savePet()
+            if (petToEdit != null) updatePet() else savePet()
+        }
+    }
+
+    private fun checkForEditMode() {
+        petToEdit?.let { pet ->
+            binding.etName.setText(pet.name)
+            binding.etBreed.setText(pet.breed)
+            binding.etAge.setText(pet.age.toString())
+            binding.etWeight.setText(pet.weight.toString())
+            if (pet.gender == "Male") binding.rbMale.isChecked = true else binding.rbFemale.isChecked = true
+            
+            val types = arrayOf("Dog", "Cat", "Bird", "Rabbit", "Other")
+            binding.spinnerType.setSelection(types.indexOf(pet.type))
+            
+            if (pet.imagePath != null) {
+                currentPhotoPath = pet.imagePath
+                Glide.with(this).load(pet.imagePath).into(binding.ivPet)
+            }
+            
+            binding.btnSave.text = getString(R.string.update_pet)
+        }
+    }
+
+    private fun updatePet() {
+        val name = binding.etName.text.toString()
+        val type = binding.spinnerType.selectedItem.toString()
+        val breed = binding.etBreed.text.toString()
+        val ageText = binding.etAge.text.toString()
+        val weightText = binding.etWeight.text.toString()
+        val gender = if (binding.rbMale.isChecked) "Male" else "Female"
+
+        if (name.isEmpty() || breed.isEmpty() || ageText.isEmpty() || weightText.isEmpty()) {
+            Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        petToEdit?.let {
+            it.name = name
+            it.type = type
+            it.breed = breed
+            it.age = ageText.toInt()
+            it.gender = gender
+            it.weight = weightText.toDouble()
+            it.imagePath = currentPhotoPath
+
+            viewModel.updatePet(it)
+            Toast.makeText(requireContext(), "Pet updated!", Toast.LENGTH_SHORT).show()
+            parentFragmentManager.popBackStack()
         }
     }
 
     private fun capturePhoto() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            performCapture()
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+        }
+    }
+
+    private fun performCapture() {
         val photoFile: File? = try {
             createImageFile()
         } catch (ex: Exception) {
@@ -128,5 +221,19 @@ class AddPetFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val ARG_PET = "pet"
+
+        fun newInstance(pet: Pet? = null): AddPetFragment {
+            val fragment = AddPetFragment()
+            if (pet != null) {
+                val args = Bundle()
+                args.putSerializable(ARG_PET, pet)
+                fragment.arguments = args
+            }
+            return fragment
+        }
     }
 }

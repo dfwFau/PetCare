@@ -28,7 +28,8 @@ class DashboardFragment : Fragment() {
         binding.cardPets.setOnClickListener { navigateTo(PetListFragment()) }
         binding.cardVaccines.setOnClickListener { navigateTo(VaccinationFragment()) }
         binding.cardReminders.setOnClickListener { navigateTo(FeedingFragment()) }
-        binding.cardAppointments.setOnClickListener { navigateTo(DashboardFragment()) } // Placeholder
+        binding.cardAppointments.setOnClickListener { navigateTo(AppointmentFragment()) }
+        binding.cardMedicalRecords.setOnClickListener { navigateTo(MedicalHistoryFragment()) }
     }
 
     private fun navigateTo(fragment: Fragment) {

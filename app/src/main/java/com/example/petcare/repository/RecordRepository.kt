@@ -28,6 +28,9 @@ class RecordRepository(
     suspend fun insertAppointment(appointment: Appointment) = appointmentDao.insertAppointment(appointment)
     suspend fun updateAppointment(appointment: Appointment) = appointmentDao.updateAppointment(appointment)
     suspend fun deleteAppointment(appointment: Appointment) = appointmentDao.deleteAppointment(appointment)
+    suspend fun getAppointmentById(id: Long): Appointment? = appointmentDao.getAppointmentById(id)
+    fun getAllAppointments(): LiveData<List<Appointment>> = appointmentDao.getAllAppointments()
+    fun getUpcomingAppointments(currentTime: Long): LiveData<List<Appointment>> = appointmentDao.getUpcomingAppointments(currentTime)
 
     // Medical Records
     fun getMedicalRecordsForPet(petId: Long): LiveData<List<MedicalRecord>> = medicalRecordDao.getMedicalRecordsForPet(petId)

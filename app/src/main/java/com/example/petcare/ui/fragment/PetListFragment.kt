@@ -46,7 +46,7 @@ class PetListFragment : Fragment() {
 
         binding.fabAddPet.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, AddPetFragment())
+                .replace(R.id.fragment_container, AddPetFragment.newInstance())
                 .addToBackStack(null)
                 .commit()
         }
@@ -64,7 +64,10 @@ class PetListFragment : Fragment() {
 
     private fun setupRecyclerView() {
         adapter = PetAdapter { pet ->
-            // On Click Pet
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, PetDetailFragment.newInstance(pet))
+                .addToBackStack(null)
+                .commit()
         }
         binding.rvPets.layoutManager = LinearLayoutManager(requireContext())
         binding.rvPets.adapter = adapter

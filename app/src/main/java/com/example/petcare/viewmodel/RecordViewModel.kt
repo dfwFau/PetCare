@@ -21,6 +21,9 @@ class RecordViewModel(private val repository: RecordRepository) : ViewModel() {
     fun insertAppointment(appointment: Appointment) = viewModelScope.launch { repository.insertAppointment(appointment) }
     fun updateAppointment(appointment: Appointment) = viewModelScope.launch { repository.updateAppointment(appointment) }
     fun deleteAppointment(appointment: Appointment) = viewModelScope.launch { repository.deleteAppointment(appointment) }
+    suspend fun getAppointmentById(id: Long) = repository.getAppointmentById(id)
+    fun getUpcomingAppointments(currentTime: Long) = repository.getUpcomingAppointments(currentTime)
+    fun getAllAppointments() = repository.getAllAppointments()
 
     fun getMedicalRecords(petId: Long) = repository.getMedicalRecordsForPet(petId)
     fun insertMedicalRecord(record: MedicalRecord) = viewModelScope.launch { repository.insertMedicalRecord(record) }

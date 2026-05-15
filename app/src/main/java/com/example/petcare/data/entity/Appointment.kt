@@ -20,5 +20,6 @@ data class Appointment(
     var clinicName: String,
     var dateTime: Long,
     var purpose: String,
-    var notes: String
+    var notes: String,
+    var isDone: Boolean = false
 ) : Serializable

@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">Pet Care</string>
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="desc_go_to_dashboard">Go to Dashboard</string>
+    <string name="pet_age">Age</string>
+    <string name="pet_gender">Gender</string>
+    <string name="pet_weight">Weight</string>
+    <string name="delete_pet_profile">Delete Pet Profile</string>
+    <string name="delete_pet_title">Delete Pet</string>
+    <string name="delete_pet_message">Are you sure you want to delete %s?</string>
+    <string name="delete_action">Delete</string>
+    <string name="cancel_action">Cancel</string>
+    <string name="pet_deleted">Pet deleted</string>
+    <string name="weight_kg">%s kg</string>
+    <string name="edit_pet_profile">Edit Pet Profile</string>
+    <string name="update_pet">Update Pet</string>
+    <string name="from_gallery">From Gallery</string>
+    <string name="welcome_back">Welcome Back!</string>
+    <string name="dashboard_subtitle">Everything is ready for your pets.</string>
+    <string name="menu_vaccines">Vaccines</string>
+    <string name="menu_feeding">Feeding</string>
+    <string name="menu_appointments">Appointm.</string>
+    <string name="menu_records">Records</string>
+    <string name="menu_my_pets">My Pets</string>
+    <string name="content_desc_menu">Menu</string>
+    <string name="no_pets_found">No pets found</string>
+    <string name="action_done">Done</string>
+    <string name="action_schedule">Schedule</string>
 </resources>
