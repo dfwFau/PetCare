@@ -76,7 +76,10 @@ class VaccinationFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = VaccinationAdapter()
+        adapter = VaccinationAdapter { vaccination ->
+            vaccination.isDone = true
+            recordViewModel.updateVaccination(vaccination)
+        }
         binding.rvVaccinations.layoutManager = LinearLayoutManager(requireContext())
         binding.rvVaccinations.adapter = adapter
     }
@@ -85,18 +88,19 @@ class VaccinationFragment : Fragment() {
         val dialogBinding = DialogAddVaccinationBinding.inflate(layoutInflater)
         val dialog = AlertDialog.Builder(requireContext())
             .setView(dialogBinding.root)
-            .setPositiveButton("Add", null)
-            .setNegativeButton("Cancel", null)
             .create()
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         setupPetSpinner(dialogBinding)
         setupDatePicker(dialogBinding)
 
-        dialog.setOnShowListener {
-            val button = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            button.setOnClickListener {
-                saveVaccination(dialogBinding, dialog)
-            }
+        dialogBinding.btnSave.setOnClickListener {
+            saveVaccination(dialogBinding, dialog)
+        }
+
+        dialogBinding.btnCancel.setOnClickListener {
+            dialog.dismiss()
         }
 
         dialog.show()

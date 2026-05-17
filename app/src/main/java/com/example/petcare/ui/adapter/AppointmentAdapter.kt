@@ -38,10 +38,6 @@ class AppointmentAdapter(private val onDoneClick: (Appointment) -> Unit) : ListA
                 binding.root.alpha = 1.0f
             }
 
-            binding.root.setOnClickListener {
-                onDoneClick(appointment)
-            }
-
             binding.btnDone.setOnClickListener {
                 onDoneClick(appointment)
             }

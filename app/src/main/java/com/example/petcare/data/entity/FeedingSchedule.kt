@@ -19,5 +19,6 @@ data class FeedingSchedule(
     val petId: Long,
     var scheduleType: String, // Morning, Afternoon, Evening
     var feedingTime: String, // HH:mm
-    var isEnabled: Boolean = true
+    var isEnabled: Boolean = true,
+    var isDone: Boolean = false
 ) : Serializable

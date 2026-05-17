@@ -1,6 +1,7 @@
 package com.example.petcare.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,7 +11,7 @@ import com.example.petcare.databinding.ItemRecordBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
-class VaccinationAdapter : ListAdapter<Vaccination, VaccinationAdapter.VaccinationViewHolder>(VaccinationDiffCallback()) {
+class VaccinationAdapter(private val onDoneClick: (Vaccination) -> Unit) : ListAdapter<Vaccination, VaccinationAdapter.VaccinationViewHolder>(VaccinationDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VaccinationViewHolder {
         val binding = ItemRecordBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -21,7 +22,7 @@ class VaccinationAdapter : ListAdapter<Vaccination, VaccinationAdapter.Vaccinati
         holder.bind(getItem(position))
     }
 
-    class VaccinationViewHolder(private val binding: ItemRecordBinding) :
+    inner class VaccinationViewHolder(private val binding: ItemRecordBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(vaccination: Vaccination) {
             binding.tvTitle.text = vaccination.vaccineName
@@ -31,6 +32,18 @@ class VaccinationAdapter : ListAdapter<Vaccination, VaccinationAdapter.Vaccinati
             
             binding.tvSubtitle.text = "Given: $dateGiven | Next: $nextDate"
             binding.tvExtra.text = "Notes: ${vaccination.notes}"
+
+            if (vaccination.isDone) {
+                binding.btnDone.visibility = View.GONE
+                binding.root.alpha = 0.5f
+            } else {
+                binding.btnDone.visibility = View.VISIBLE
+                binding.root.alpha = 1.0f
+            }
+
+            binding.btnDone.setOnClickListener {
+                onDoneClick(vaccination)
+            }
         }
     }
 

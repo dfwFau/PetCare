@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Pastel Color Palette -->
-    <color name="primaryColor">#A7C7E7</color> <!-- Soft Pastel Blue -->
-    <color name="primaryLightColor">#D4E6F1</color>
-    <color name="primaryDarkColor">#7FB3D5</color>
+    <!-- Monochromatic Blue Palette -->
+    <color name="primaryColor">#2196F3</color> <!-- Material Blue -->
+    <color name="primaryLightColor">#BBDEFB</color> <!-- Light Blue 100 -->
+    <color name="primaryDarkColor">#1976D2</color> <!-- Dark Blue 700 -->
 
-    <color name="secondaryColor">#FFD1DC</color> <!-- Pastel Pink -->
-    <color name="accentColor">#C1E1C1</color> <!-- Pastel Green -->
+    <color name="secondaryColor">#64B5F6</color> <!-- Blue 300 -->
+    <color name="accentColor">#2196F3</color>
 
-    <color name="backgroundColor">#FBFCFC</color>
+    <color name="backgroundColor">#F5F9FF</color> <!-- Very light blue tint -->
     <color name="surfaceColor">#FFFFFF</color>
 
-    <color name="primaryTextColor">#4A4A4A</color>
-    <color name="secondaryTextColor">#8E8E8E</color>
+    <color name="primaryTextColor">#1A237E</color> <!-- Very Dark Blue for text -->
+    <color name="secondaryTextColor">#546E7A</color> <!-- Blue Grey for secondary text -->
 
-    <color name="dividerColor">#F2F4F4</color>
+    <color name="dividerColor">#E3F2FD</color>
 
-    <!-- Specific Pastel Accents for Categories -->
-    <color name="pastel_blue">#A7C7E7</color>
-    <color name="pastel_pink">#FFD1DC</color>
-    <color name="pastel_green">#C1E1C1</color>
-    <color name="pastel_yellow">#FFF9C4</color>
-    <color name="pastel_purple">#E0BBE4</color>
+    <!-- Unified Accent -->
+    <color name="pastel_blue">#E3F2FD</color>
+    <color name="pastel_pink">#E3F2FD</color>
+    <color name="pastel_green">#E3F2FD</color>
+    <color name="pastel_yellow">#E3F2FD</color>
+    <color name="pastel_purple">#E3F2FD</color>
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="gray_100">#F8F9F9</color>
+    <color name="gray_100">#ECEFF1</color> <!-- Blue-ish Grey -->
 </resources>

@@ -82,9 +82,15 @@ class FeedingFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = FeedingAdapter { schedule ->
-            showDeleteConfirmation(schedule)
-        }
+        adapter = FeedingAdapter(
+            onDoneClick = { schedule ->
+                schedule.isDone = true
+                recordViewModel.updateFeedingSchedule(schedule)
+            },
+            onDelete = { schedule ->
+                showDeleteConfirmation(schedule)
+            }
+        )
         binding.rvFeedingSchedules.layoutManager = LinearLayoutManager(requireContext())
         binding.rvFeedingSchedules.adapter = adapter
     }
@@ -93,9 +99,9 @@ class FeedingFragment : Fragment() {
         val dialogBinding = DialogAddFeedingBinding.inflate(layoutInflater)
         val dialog = AlertDialog.Builder(requireContext())
             .setView(dialogBinding.root)
-            .setPositiveButton("Add", null)
-            .setNegativeButton("Cancel", null)
             .create()
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         setupPetSpinner(dialogBinding)
         setupTypeSpinner(dialogBinding)
@@ -108,11 +114,12 @@ class FeedingFragment : Fragment() {
             }, selectedHour, selectedMinute, false).show()
         }
 
-        dialog.setOnShowListener {
-            val button = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            button.setOnClickListener {
-                saveFeedingSchedule(dialogBinding, dialog)
-            }
+        dialogBinding.btnSave.setOnClickListener {
+            saveFeedingSchedule(dialogBinding, dialog)
+        }
+
+        dialogBinding.btnCancel.setOnClickListener {
+            dialog.dismiss()
         }
 
         dialog.show()

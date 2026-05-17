@@ -20,5 +20,6 @@ data class Vaccination(
     var vaccineName: String,
     var dateGiven: Long,
     var nextDate: Long,
-    var notes: String
+    var notes: String,
+    var isDone: Boolean = false
 ) : Serializable

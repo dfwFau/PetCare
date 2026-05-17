@@ -80,18 +80,19 @@ class AppointmentFragment : Fragment() {
         val dialogBinding = DialogAddAppointmentBinding.inflate(layoutInflater)
         val dialog = AlertDialog.Builder(requireContext())
             .setView(dialogBinding.root)
-            .setPositiveButton("Add", null)
-            .setNegativeButton("Cancel", null)
             .create()
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         setupPetSpinner(dialogBinding)
         setupDateTimePickers(dialogBinding)
 
-        dialog.setOnShowListener {
-            val button = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            button.setOnClickListener {
-                saveAppointment(dialogBinding, dialog)
-            }
+        dialogBinding.btnSave.setOnClickListener {
+            saveAppointment(dialogBinding, dialog)
+        }
+
+        dialogBinding.btnCancel.setOnClickListener {
+            dialog.dismiss()
         }
 
         dialog.show()
